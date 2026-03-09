@@ -147,18 +147,10 @@ T = 2π √(r³ / μ)
 
 # 개발 환경 및 사용 기술
 
-- **개발 도구**: Visual Studio  
-- **프로그래밍 언어**: C#  
-- **플랫폼**: .NET  
-- **UI 프레임워크**: Windows Forms (WinForms)  
+- **개발 도구**: Visual Studio Code  
+- **프로그래밍 언어**: Python  
+- **UI 프레임워크**: Fast API  
 - **형상 관리**: Git  
-
-## 개발 방식
-
-- Visual Studio에서 WinForms 디자이너를 활용하여 UI 구성
-- C#으로 이벤트 기반 로직 구현
-- UI(Form)와 비즈니스 로직(Service) 분리
-- 코드 컨벤션과 스타일을 팀 내에서 통일하여 유지보수성 확보
 
 ---
 
