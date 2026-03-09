@@ -162,175 +162,180 @@ T = 2π √(r³ / μ)
 
 ---
 
-# C# 공동 개발 코드 규칙
+````markdown
+# Python 공동 개발 코드 규칙
 
-# 1. 기본 원칙
+## 1. 기본 원칙
 
 - 이름만 보고도 의도를 이해할 수 있어야 한다.
 - 주석보다 코드 자체가 설명이 되도록 작성한다.
 - 코드 리뷰 기준을 문서화하고 지속적으로 개선한다.
+- Python 스타일 가이드는 PEP 8을 기본 기준으로 따른다.
 
 ---
 
 # 2. 네이밍 규칙
 
-## 2.1 PascalCase
+## 2.1 클래스 (PascalCase)
 
-다음 항목에는 PascalCase를 사용한다.
+클래스 이름은 PascalCase를 사용한다.
 
-- 클래스
-- 메서드
-- 프로퍼티
-- public 멤버
-- enum
-- 인터페이스
+```python
+class OrderService:
+    def create_order(self):
+        pass
+````
 
-```csharp
-public class OrderService
-{
-    public void CreateOrder() { }
-    public int OrderCount { get; set; }
-}
+---
+
+## 2.2 함수 및 메서드 (snake_case)
+
+Python에서는 snake_case를 사용한다.
+
+대상:
+
+* 함수
+* 메서드
+* 변수
+
+```python
+def create_order(order_name: str):
+    order_count = 0
 ```
 
 ---
 
-## 2.2 camelCase
+## 2.3 인터페이스 / 추상 클래스
 
-다음 항목에는 camelCase를 사용한다.
+Python에서는 인터페이스 대신 추상 클래스를 사용한다.
 
-- 지역 변수
-- 매개변수
-- private 필드(팀 규칙에 따름)
+```python
+from abc import ABC, abstractmethod
 
-```csharp
-public void CreateOrder(string orderName)
-{
-    int orderCount = 0;
-}
+class OrderServiceInterface(ABC):
+
+    @abstractmethod
+    def create_order(self):
+        pass
 ```
 
 ---
 
-## 2.3 인터페이스
+## 2.4 private 변수
 
-- `I` 접두어를 사용한다.
+private 변수는 `_` 접두어를 사용한다.
 
-```csharp
-public interface IOrderService
-{
-    void CreateOrder();
-}
-```
+```python
+class OrderService:
 
----
-
-## 2.4 private 필드
-
-- `_camelCase` 형식을 권장한다.
-- readonly 필드는 명확히 구분한다.
-
-```csharp
-private readonly IOrderRepository _orderRepository;
-private int _orderCount;
+    def __init__(self, repository):
+        self._repository = repository
+        self._order_count = 0
 ```
 
 ---
 
 ## 2.5 메서드 네이밍
 
-- 동사로 시작한다.
-- 역할이 명확하게 드러나야 한다.
+메서드는 동사로 시작한다.
 
-```csharp
-GetUser()
-CreateOrder()
-UpdateProfile()
-DeleteItem()
+예:
+
+```
+get_user()
+create_order()
+update_profile()
+delete_item()
 ```
 
 ---
 
-## 2.6 비동기 메서드
+## 2.6 비동기 함수
 
-- `Async` 접미사를 반드시 붙인다.
+비동기 함수는 async / await를 사용한다.
 
-```csharp
-public async Task<Order> GetOrderAsync()
-{
-    ...
-}
+```python
+async def get_order_async():
+    pass
 ```
 
 ---
 
 ## 2.7 Boolean 변수
 
-- is, has, can, should 등의 접두어를 사용한다.
+Boolean 변수는 다음 접두어를 사용한다.
 
-```csharp
-bool isActive;
-bool hasPermission;
-bool canEdit;
+* is
+* has
+* can
+* should
+
+```python
+is_active = True
+has_permission = False
+can_edit = True
 ```
 
 ---
 
 ## 2.8 상수
 
-- PascalCase를 사용한다.
+상수는 UPPER_SNAKE_CASE를 사용한다.
 
-```csharp
-public const int MaxOrderCount = 100;
+```python
+MAX_ORDER_COUNT = 100
 ```
 
 ---
 
 ## 2.9 Enum
 
-- Enum 이름은 단수형
-- 값은 PascalCase
+Enum 이름은 PascalCase
+값은 UPPER_CASE
 
-```csharp
-public enum OrderStatus
-{
-    Pending,
-    Completed,
-    Cancelled
-}
+```python
+from enum import Enum
+
+class OrderStatus(Enum):
+    PENDING = 1
+    COMPLETED = 2
+    CANCELLED = 3
 ```
 
 ---
 
-## 2.10 네임스페이스
+## 2.10 패키지 / 모듈 네이밍
 
-```
-회사명.프로젝트명.기능명
-```
+패키지 및 모듈은 소문자 snake_case를 사용한다.
 
 예:
 
-```csharp
-MyCompany.ECommerce.Services
+```
+mycompany.ecommerce.services
 ```
 
 ---
 
 ## 2.11 파일 및 폴더 구조
 
-- 클래스 이름과 파일 이름을 일치시킨다.
-- 한 파일에 하나의 public 클래스만 둔다.
-- 기능 단위로 폴더를 구성한다.
+* 파일 이름은 snake_case
+* 하나의 파일에는 하나의 주요 클래스 또는 기능
+* 기능 단위로 디렉토리 구성
 
-예시 구조:
+예시:
 
 ```
-Services/
-    OrderService.cs
-Interfaces/
-    IOrderService.cs
-Models/
-    Order.cs
+services/
+    order_service.py
+
+repositories/
+    order_repository.py
+
+models/
+    order.py
+
+interfaces/
+    order_service_interface.py
 ```
 
 ---
@@ -339,84 +344,216 @@ Models/
 
 ## 3.1 의미 있는 이름 사용
 
-```csharp
-int orderCount;
-string customerName;
+```python
+order_count = 10
+customer_name = "John"
 ```
 
-- 축약어 남발 금지
-- 검색 가능한 이름 사용
-- 의도가 드러나는 이름 사용
+규칙
+
+* 축약어 남발 금지
+* 검색 가능한 이름 사용
+* 의도가 드러나는 이름 사용
 
 ---
 
 ## 3.2 함수는 한 가지 일만 하게 작성
 
-```csharp
-public void ProcessOrder(Order order)
-{
-    Validate(order);
-    Save(order);
-    NotifyCustomer(order);
-}
+```python
+def process_order(order):
+    validate(order)
+    save(order)
+    notify_customer(order)
 ```
 
-- 하나의 메서드는 하나의 책임만 가진다.
-- 내부 로직도 가능하면 분리한다.
+* 하나의 함수는 하나의 책임만 가진다
+* 내부 로직은 가능하면 분리한다
 
 ---
 
 ## 3.3 함수는 짧게 유지
 
-- 가능하면 20줄 이하
-- 중첩은 2~3단계 이하
-- Guard Clause 적극 사용
+* 가능하면 20~30줄 이하
+* 중첩은 2~3단계 이하
+* Guard Clause 적극 사용
 
-```csharp
-if (user == null)
-    return;
+```python
+def process_user(user):
 
-if (!user.IsActive)
-    return;
+    if user is None:
+        return
+
+    if not user.is_active:
+        return
 ```
 
 ---
 
 ## 3.4 매개변수는 3개 이하
 
-```csharp
-public Task<Order> CreateOrderAsync(CreateOrderRequest request)
+매개변수가 많으면 DTO 또는 dataclass 사용
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class CreateOrderRequest:
+    order_name: str
+    price: int
 ```
 
-- 관련 값은 DTO로 묶는다.
+```python
+def create_order(request: CreateOrderRequest):
+    pass
+```
 
 ---
 
-## 3.5 주석은 최소화
+## 3.5 주석 최소화
 
-- 무엇(What)보다 왜(Why)를 설명한다.
-- 코드로 표현 가능한 것은 코드로 작성한다.
+* What 보다 Why 설명
+* 코드로 표현 가능한 것은 코드로 작성
+
+```python
+# retry가 필요한 이유: 외부 API timeout 가능성
+```
 
 ---
 
 ## 3.6 매직 넘버 사용 금지
 
-```csharp
-if (order.Status == OrderStatus.Completed)
+```python
+if order.status == OrderStatus.COMPLETED:
 ```
 
 또는
 
-```csharp
-private const int MaxRetryCount = 3;
+```python
+MAX_RETRY_COUNT = 3
 ```
 
 ---
 
 ## 3.7 중복 제거 (DRY)
 
-- 동일한 로직이 반복되면 메서드로 분리한다.
-- 공통 로직은 재사용 가능하게 작성한다.
+동일한 로직이 반복되면 함수로 분리한다.
+
+```python
+def validate_order(order):
+    ...
+```
+
+---
+
+## 3.8 클래스는 작게 유지
+
+* 한 클래스는 한 책임
+* 300~500줄 이상이면 분리 고려
+
+예:
+
+```
+OrderService
+OrderRepository
+OrderValidator
+```
+
+---
+
+## 3.9 추상화에 의존
+
+구현이 아닌 추상 클래스에 의존한다.
+
+```python
+class OrderService:
+
+    def __init__(self, repository):
+        self._repository = repository
+```
+
+---
+
+## 3.10 예외 처리 명확히
+
+```python
+try:
+    save_order(order)
+except DatabaseError as e:
+    logger.error("Database error occurred", exc_info=e)
+    raise
+```
+
+규칙
+
+* 예외를 무시하지 않는다
+* 의미 있는 로그를 남긴다
+
+---
+
+## 3.11 None 방어 코드 작성
+
+```python
+def create_order(order):
+
+    if order is None:
+        raise ValueError("order cannot be None")
+```
+
+타입 힌트 사용 권장
+
+```python
+def create_order(order: Order) -> Order:
+```
+
+---
+
+## 3.12 비동기 코드 일관성 유지
+
+```python
+result = await get_order_async()
+```
+
+권장
+
+* async / await 흐름 유지
+* blocking 호출 최소화
+
+---
+
+# 4. 코드 스타일 통일
+
+공동 개발 시 반드시 적용
+
+* Black (자동 포맷)
+* Flake8 (코드 검사)
+* isort (import 정렬)
+* mypy (타입 검사)
+
+예:
+
+```
+black
+flake8
+isort
+mypy
+```
+
+---
+
+# 5. 코드 리뷰 기준
+
+코드 리뷰 시 확인 사항
+
+* 함수가 한 가지 일만 하는가
+* 이름만 보고 역할을 이해할 수 있는가
+* 중복 코드가 존재하지 않는가
+* 매직 넘버를 사용하지 않았는가
+* 예외 처리가 적절한가
+* 테스트 가능한 구조인가
+* 타입 힌트가 명확한가
+
+```
+```
 
 ---
 
