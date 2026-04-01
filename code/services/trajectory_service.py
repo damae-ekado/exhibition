@@ -30,3 +30,13 @@ def calculate_angular_velocity(
         raise ValueError("delta_time must be positive")
 
     return delta_theta / delta_time
+
+from config.constants import EARTH_ROTATION_RATE
+
+
+def correct_angular_velocity(observed_velocity: float) -> float:
+    """
+    지구 자전에 의한 각속도 성분을 제거한다.
+    """
+
+    return observed_velocity - EARTH_ROTATION_RATE
