@@ -11,3 +11,5 @@ class SatellitePoint:
 
     az: float = 0.0
     alt: float = 0.0
+
+    timestamp: float = 0.0  # 추가
