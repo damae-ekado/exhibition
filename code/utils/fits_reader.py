@@ -19,3 +19,16 @@ def pixel_to_skycoord(x: float, y: float, wcs: WCS) -> Tuple[float, float]:
     sky_coord = wcs.pixel_to_world(x, y)
 
     return sky_coord.ra.deg, sky_coord.dec.deg
+
+def extract_time_info(header):
+    """
+    FITS 헤더에서 관측 시간과 노출 시간을 추출한다.
+    """
+
+    exposure_time = header.get("EXPTIME")
+    observation_time = header.get("DATE-OBS")
+
+    if exposure_time is None or observation_time is None:
+        raise ValueError("FITS header missing EXPTIME or DATE-OBS")
+
+    return observation_time, exposure_time
